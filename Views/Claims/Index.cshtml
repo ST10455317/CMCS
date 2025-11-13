@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CMCS.Models.Claim>
+@{
+    ViewBag.Title = "Claims";
+}
+<h2>Claims</h2>
+
+<form method="get" asp-action="Index">
+    <input type="text" name="lecturerName" placeholder="Enter lecturer name" value="@ViewBag.LecturerName" />
+    <button type="submit">Search</button>
+    <a asp-action="Create">Submit new claim</a> |
+    <a asp-action="Review">Manager Review</a>
+</form>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Lecturer</th>
+            <th>Hours</th>
+            <th>Rate</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>File</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.LecturerName</td>
+                <td>@c.HoursWorked</td>
+                <td>@c.HourlyRate</td>
+                <td>@c.Total</td>
+                <td>@c.Status</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(c.UploadedFileName))
+                    {
+                        <a asp-action="Download" asp-route-file="@c.UploadedFileName">Download</a>
+                    }
+                </td>
+                <td>@c.SubmittedAt.ToLocalTime()</td>
+            </tr>
+        }
+    </tbody>
+</table>
